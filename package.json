@@ -16,6 +16,9 @@
     "脚手架",
     "CLI"
   ],
+  "files": [
+    "dist"
+  ],
   "license": "MIT",
   "dependencies": {
     "@vitejs/plugin-react": "^1.3.2",
