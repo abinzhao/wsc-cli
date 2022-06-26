@@ -91,12 +91,6 @@ Object.keys(actionMap).forEach((action) => {
         case "init":
           init(program.username, program.token);
           break;
-        case "dev":
-          dev(program.port);
-          break;
-        case "build":
-          build();
-          break;
         default:
           break;
       }

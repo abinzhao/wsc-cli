@@ -96,12 +96,6 @@ Object.keys(actionMap).forEach(action => {
       case "init":
         (0, _init2.default)(_commander2.default.username, _commander2.default.token);
         break;
-      case "dev":
-        dev(_commander2.default.port);
-        break;
-      case "build":
-        build();
-        break;
       default:
         break;
     }

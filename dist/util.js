@@ -12,6 +12,10 @@ var _chalk = require("chalk");
 
 var _chalk2 = _interopRequireDefault(_chalk);
 
+var _ora = require("ora");
+
+var _ora2 = _interopRequireDefault(_ora);
+
 var _inquirer = require("inquirer");
 
 var _inquirer2 = _interopRequireDefault(_inquirer);
@@ -21,6 +25,9 @@ var _handlebars = require("handlebars");
 var _handlebars2 = _interopRequireDefault(_handlebars);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const util = require("util");
+const exec = util.promisify(require("child_process").exec);
 
 // 文件是否存在
 let notExistFold = async name => {
@@ -51,6 +58,20 @@ let promptList = [{
   type: "input",
   name: "author",
   message: "请输入作者姓名："
+}, {
+  type: "input",
+  name: "author",
+  message: "请输入作者姓名："
+}, {
+  type: "list",
+  name: "eslint",
+  message: "是否使用ESLint代码检测",
+  choices: ["Yes", "No"]
+}, {
+  type: "list",
+  name: "prettier",
+  message: "是否使用Prettier代码格式化",
+  choices: ["Yes", "No"]
 }];
 
 let prompt = () => {
@@ -79,8 +100,40 @@ let updateJsonFile = (fileName, obj) => {
   });
 };
 
+//安装eslint,prettier工具
+let installCode = (ProjectName, data) => {
+  return new Promise(async resolve => {
+    if (data.eslint == "Yes") {
+      let loading = (0, _ora2.default)("正在安装ESlint中...");
+      loading.start("正在安装ESlint中...");
+      await console.log("***", process.cwd(), "data:", data.name);
+      await exec(`cd ${data.name}`);
+      await console.log("**--*", process.cwd(), "data:", data.name);
+      await exec(`yarn add @typescript-eslint/parser eslint eslint-plugin-standard @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-promise  --dev`);
+      loading.succeed("ESlint安装完成");
+      let loadingFile = (0, _ora2.default)("正在初始化ESlint...");
+      loadingFile.start("正在初始化ESlint...");
+      await exec(`yarn eslint`);
+      loadingFile.succeed("ESlint初始化完成");
+    }
+    if (data.prettier == "Yes") {
+      let loading = (0, _ora2.default)("正在安装Prettier中...");
+      loading.start("正在安装Prettier中...");
+      await exec(`yarn add prettier --dev`);
+      loading.succeed("Prettier安装完成");
+      let loadingFile = (0, _ora2.default)("正在初始化Prettier...");
+      loadingFile.start("正在初始化Prettier...");
+      const da = await exec(`yarn prettier`);
+      console.log("---", da);
+      loadingFile.succeed("Prettier初始化完成");
+    }
+    resolve();
+  });
+};
+
 module.exports = {
   notExistFold,
   prompt,
-  updateJsonFile
+  updateJsonFile,
+  installCode
 };

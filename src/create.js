@@ -2,10 +2,26 @@ import symbol from "log-symbols";
 import chalk from "chalk";
 import ora from "ora";
 import downloadGit from "download-git-repo";
+const util = require("util");
+const exec = util.promisify(require("child_process").exec);
 
-import { notExistFold, prompt, updateJsonFile } from "./util";
+import { notExistFold, prompt, updateJsonFile, installCode } from "./util";
 
 let create = async (ProjectName) => {
+  //检测脚手架最新版本
+  const versionNew = await exec(`npm view works-space-cli version`);
+  const versionOld = await exec(`works-space-cli -v`);
+  if (!(versionNew.stdout == versionOld.stdout)) {
+    console.log(
+      chalk.yellow(`
+    --------------------------------------
+            当前安装版本为:${chalk.green(versionOld.stdout)}
+              最新版本为:${chalk.green(versionNew.stdout)}
+        请使用${chalk.green("wsc update")}以安装最新版本
+    --------------------------------------
+    `)
+    );
+  }
   // 项目名不能为空
   if (ProjectName === undefined) {
     console.log(symbol.error, chalk.red("创建项目的时候，请输入项目名"));
@@ -46,17 +62,20 @@ let create = async (ProjectName) => {
             answer.name = ProjectName;
             updateJsonFile(fileName, answer).then(() => {
               console.log(symbol.success, chalk.green("配置文件更新完成"));
+            });
+            // 安装代码检测，代码格式化工具
+            installCode(ProjectName, answer).then(() => {
               console.log(
                 chalk.yellow(`
               🚀项目创建完毕，请使用以下命令进入项目：
               💻进入项目目录：${chalk.green(`cd ${ProjectName}`)}
+
               😎初始化项目：${chalk.green(`wsc init 用户名 token`)}
               ${chalk.yellow("该命令需要输入GitHub用户名以及token来连接仓库")}
               ${chalk.yellow("功能：自动创建GitHub存放源代码")}
-              🚀启动项目：${chalk.green("npm run dev (or yarn dev)")}
-              🚴‍♂️安装依赖：${chalk.green("npm install (or yarn install)")}
-              🔨打包构建：${chalk.green("npm run build (or yarn build)")}
-              ${chalk.yellow("推荐使用yarn启动或构建项目")}
+              🚀启动项目：${chalk.green("yarn dev")}
+              🚀安装依赖：${chalk.green("yarn install")}
+              🔨打包构建：${chalk.green("yarn build")}
               `)
               );
             });

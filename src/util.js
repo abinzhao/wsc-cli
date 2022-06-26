@@ -1,8 +1,11 @@
 import fs from "fs";
 import symbol from "log-symbols";
 import chalk from "chalk";
+import ora from "ora";
 import inquirer from "inquirer";
 import handlebars from "handlebars";
+const util = require("util");
+const exec = util.promisify(require("child_process").exec);
 
 // 文件是否存在
 let notExistFold = async (name) => {
@@ -41,6 +44,23 @@ let promptList = [
     name: "author",
     message: "请输入作者姓名：",
   },
+  {
+    type: "input",
+    name: "author",
+    message: "请输入作者姓名：",
+  },
+  // {
+  //   type: "list",
+  //   name: "eslint",
+  //   message: "是否使用ESLint代码检测",
+  //   choices: ["Yes", "No"],
+  // },
+  // {
+  //   type: "list",
+  //   name: "prettier",
+  //   message: "是否使用Prettier代码格式化",
+  //   choices: ["Yes", "No"],
+  // },
 ];
 
 let prompt = () => {
@@ -69,8 +89,16 @@ let updateJsonFile = (fileName, obj) => {
   });
 };
 
+//安装eslint,prettier工具
+let installCode = (ProjectName, data) => {
+  return new Promise((resolve) => {
+    resolve();
+  });
+};
+
 module.exports = {
   notExistFold,
   prompt,
   updateJsonFile,
+  installCode,
 };
