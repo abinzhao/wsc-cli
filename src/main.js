@@ -1,14 +1,9 @@
 import program from "commander";
-import symbol from "log-symbols";
-import chalk from "chalk";
-
 import create from "./create"; // 项目创建
 import init from "./init"; // 项目初始化
-import dev from "./dev"; // 项目启动
-import build from "./build"; //项目打包
 
 /**
- * little-bird-cli 命令列表
+ * works-space-cli 命令列表
  */
 
 let actionMap = {
@@ -114,7 +109,7 @@ program
   .parse(process.argv);
 
 /**
- * little-bird-cli命令后不带参数的时候，输出帮助信息
+ * works-space-cli命令后不带参数的时候，输出帮助信息
  */
 if (!process.argv.slice(2).length) {
   program.outputHelp();

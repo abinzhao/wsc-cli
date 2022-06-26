@@ -4,14 +4,6 @@ var _commander = require("commander");
 
 var _commander2 = _interopRequireDefault(_commander);
 
-var _logSymbols = require("log-symbols");
-
-var _logSymbols2 = _interopRequireDefault(_logSymbols);
-
-var _chalk = require("chalk");
-
-var _chalk2 = _interopRequireDefault(_chalk);
-
 var _create = require("./create");
 
 var _create2 = _interopRequireDefault(_create);
@@ -20,23 +12,14 @@ var _init = require("./init");
 
 var _init2 = _interopRequireDefault(_init);
 
-var _dev = require("./dev");
-
-var _dev2 = _interopRequireDefault(_dev);
-
-var _build = require("./build");
-
-var _build2 = _interopRequireDefault(_build);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//项目打包
+// 项目初始化
 
 /**
- * little-bird-cli 命令列表
+ * works-space-cli 命令列表
  */
 
-// 项目初始化
 let actionMap = {
   // 项目创建
   create: {
@@ -95,7 +78,6 @@ let actionMap = {
 };
 
 // 添加create,init,dev命令
-// 项目启动
 // 项目创建
 Object.keys(actionMap).forEach(action => {
   if (actionMap[action].options) {
@@ -115,10 +97,10 @@ Object.keys(actionMap).forEach(action => {
         (0, _init2.default)(_commander2.default.username, _commander2.default.token);
         break;
       case "dev":
-        (0, _dev2.default)(_commander2.default.port);
+        dev(_commander2.default.port);
         break;
       case "build":
-        (0, _build2.default)();
+        build();
         break;
       default:
         break;
@@ -130,7 +112,7 @@ Object.keys(actionMap).forEach(action => {
 _commander2.default.version(require("../package.json").version, "-v --version").parse(process.argv);
 
 /**
- * little-bird-cli命令后不带参数的时候，输出帮助信息
+ * works-space-cli命令后不带参数的时候，输出帮助信息
  */
 if (!process.argv.slice(2).length) {
   _commander2.default.outputHelp();
