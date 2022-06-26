@@ -36,6 +36,17 @@ let actionMap = {
     ],
     alias: "i",
   },
+  // 更新项目
+  update: {
+    description: "更新项目版本", // 描述
+    usages: [
+      // 使用方法
+      "works-space-cli update",
+      "ws-cli update",
+      "wsc update",
+    ],
+    alias: "up", // 命令简称
+  },
   // 启动项目
   // dev: {
   //   description: "本地启动项目",
@@ -89,6 +100,9 @@ Object.keys(actionMap).forEach((action) => {
           create(...process.argv.slice(3));
           break;
         case "init":
+          init(program.username, program.token);
+          break;
+        case "update":
           init(program.username, program.token);
           break;
         default:
