@@ -105,6 +105,8 @@ let installCode = (ProjectName, data) => {
   return new Promise(async resolve => {
     if (data.eslint) {
       await loadCmd(`yarn add --dev --exact eslint && npx eslint --init`, "ESlint", ProjectName);
+    }
+    if (data.prettier) {
       await loadCmd(`yarn add --dev --exact prettier && npx prettier --init`, "Prettier", ProjectName);
     }
 
