@@ -98,6 +98,8 @@ let installCode = (ProjectName, data) => {
         "ESlint",
         ProjectName
       );
+    }
+    if (data.prettier) {
       await loadCmd(
         `yarn add --dev --exact prettier && npx prettier --init`,
         "Prettier",
