@@ -1,6 +1,6 @@
 import program from "commander";
 import create from "./create"; // 项目创建
-import init from "./init"; // 项目初始化
+import update from "./update"; // 项目更新
 
 /**
  * works-space-cli 命令列表
@@ -18,24 +18,24 @@ let actionMap = {
     ],
     alias: "c", // 命令简称
   },
-  // 项目初始化
-  init: {
-    description: "初始化项目",
-    usages: ["works-space-cli init", "ws-cli init", "wsc init"],
-    options: [
-      {
-        flags: "-u --username <port>",
-        description: "github用户名",
-        defaultValue: "",
-      },
-      {
-        flags: "-t --token <port>",
-        description: "github创建的token",
-        defaultValue: "",
-      },
-    ],
-    alias: "i",
-  },
+  // // 项目初始化
+  // init: {
+  //   description: "初始化项目",
+  //   usages: ["works-space-cli init", "ws-cli init", "wsc init"],
+  //   options: [
+  //     {
+  //       flags: "-u --username <port>",
+  //       description: "github用户名",
+  //       defaultValue: "",
+  //     },
+  //     {
+  //       flags: "-t --token <port>",
+  //       description: "github创建的token",
+  //       defaultValue: "",
+  //     },
+  //   ],
+  //   alias: "i",
+  // },
   // 更新项目
   update: {
     description: "更新项目版本", // 描述
@@ -99,11 +99,8 @@ Object.keys(actionMap).forEach((action) => {
         case "create":
           create(...process.argv.slice(3));
           break;
-        case "init":
-          init(program.username, program.token);
-          break;
         case "update":
-          init(program.username, program.token);
+          update(program.username, program.token);
           break;
         default:
           break;

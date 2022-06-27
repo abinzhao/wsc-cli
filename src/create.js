@@ -64,16 +64,13 @@ let create = async (ProjectName) => {
               console.log(symbol.success, chalk.green("配置文件更新完成"));
             });
             // 安装代码检测，代码格式化工具
-            installCode(ProjectName, answer).then(() => {
+            installCode(ProjectName, answer).then(async () => {
               console.log(
                 chalk.yellow(`
               🚀项目创建完毕，请使用以下命令进入项目：
               💻进入项目目录：${chalk.green(`cd ${ProjectName}`)}
-
-              😎初始化项目：${chalk.green(`wsc init 用户名 token`)}
-              ${chalk.yellow("该命令需要输入GitHub用户名以及token来连接仓库")}
-              ${chalk.yellow("功能：自动创建GitHub存放源代码")}
-              🚀启动项目：${chalk.green("yarn dev")}
+              😎启动项目：${chalk.green("yarn dev")}
+              😎更新项目：${chalk.green("wsc update")}
               🚀安装依赖：${chalk.green("yarn install")}
               🔨打包构建：${chalk.green("yarn build")}
               `)

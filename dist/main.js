@@ -8,13 +8,13 @@ var _create = require("./create");
 
 var _create2 = _interopRequireDefault(_create);
 
-var _init = require("./init");
+var _update = require("./update");
 
-var _init2 = _interopRequireDefault(_init);
+var _update2 = _interopRequireDefault(_update);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// 项目初始化
+// 项目更新
 
 /**
  * works-space-cli 命令列表
@@ -29,20 +29,31 @@ let actionMap = {
     "works-space-cli create ProjectName", "ws-cli create ProjectName", "wsc create ProjectName"],
     alias: "c" // 命令简称
   },
-  // 项目初始化
-  init: {
-    description: "初始化项目",
-    usages: ["works-space-cli init", "ws-cli init", "wsc init"],
-    options: [{
-      flags: "-u --username <port>",
-      description: "github用户名",
-      defaultValue: ""
-    }, {
-      flags: "-t --token <port>",
-      description: "github创建的token",
-      defaultValue: ""
-    }],
-    alias: "i"
+  // // 项目初始化
+  // init: {
+  //   description: "初始化项目",
+  //   usages: ["works-space-cli init", "ws-cli init", "wsc init"],
+  //   options: [
+  //     {
+  //       flags: "-u --username <port>",
+  //       description: "github用户名",
+  //       defaultValue: "",
+  //     },
+  //     {
+  //       flags: "-t --token <port>",
+  //       description: "github创建的token",
+  //       defaultValue: "",
+  //     },
+  //   ],
+  //   alias: "i",
+  // },
+  // 更新项目
+  update: {
+    description: "更新项目版本", // 描述
+    usages: [
+    // 使用方法
+    "works-space-cli update", "ws-cli update", "wsc update"],
+    alias: "up" // 命令简称
   }
   // 启动项目
   // dev: {
@@ -93,8 +104,8 @@ Object.keys(actionMap).forEach(action => {
       case "create":
         (0, _create2.default)(...process.argv.slice(3));
         break;
-      case "init":
-        (0, _init2.default)(_commander2.default.username, _commander2.default.token);
+      case "update":
+        (0, _update2.default)(_commander2.default.username, _commander2.default.token);
         break;
       default:
         break;

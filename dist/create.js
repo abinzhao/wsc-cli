@@ -78,15 +78,12 @@ let create = async ProjectName => {
               console.log(_logSymbols2.default.success, _chalk2.default.green("配置文件更新完成"));
             });
             // 安装代码检测，代码格式化工具
-            (0, _util.installCode)(ProjectName, answer).then(() => {
+            (0, _util.installCode)(ProjectName, answer).then(async () => {
               console.log(_chalk2.default.yellow(`
               🚀项目创建完毕，请使用以下命令进入项目：
               💻进入项目目录：${_chalk2.default.green(`cd ${ProjectName}`)}
-
-              😎初始化项目：${_chalk2.default.green(`wsc init 用户名 token`)}
-              ${_chalk2.default.yellow("该命令需要输入GitHub用户名以及token来连接仓库")}
-              ${_chalk2.default.yellow("功能：自动创建GitHub存放源代码")}
-              🚀启动项目：${_chalk2.default.green("yarn dev")}
+              😎启动项目：${_chalk2.default.green("yarn dev")}
+              😎更新项目：${_chalk2.default.green("wsc update")}
               🚀安装依赖：${_chalk2.default.green("yarn install")}
               🔨打包构建：${_chalk2.default.green("yarn build")}
               `));
