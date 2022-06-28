@@ -45,11 +45,6 @@ let promptList = [
     message: "请输入作者姓名：",
   },
   {
-    type: "input",
-    name: "author",
-    message: "请输入作者姓名：",
-  },
-  {
     type: "confirm",
     name: "eslint",
     message: "是否使用ESLint代码检测",
@@ -73,59 +68,40 @@ let prompt = () => {
 
 // 更新json配置文件
 let updateJsonFile = (fileName, obj) => {
-  const meta = {
-    name: obj.name,
-    description: obj.description,
-    author: obj.author,
-    version: obj.version,
-  };
   return new Promise((resolve) => {
     if (fs.existsSync(fileName)) {
       const data = fs.readFileSync(fileName).toString();
-      const result = handlebars.compile(data)(meta);
+      const result = JSON.parse(data);
+      result.name = obj.name;
+      result.description = obj.description;
+      result.author = obj.author;
+      result.version = obj.version;
+      if (!obj.eslint) {
+        delete result.scripts["eslint"];
+        delete result.devDependencies["@typescript-eslint/eslint-plugin"];
+        delete result.devDependencies["@typescript-eslint/parser"];
+        delete result.devDependencies["eslint"];
+        delete result.devDependencies["eslint-config-prettier"];
+        delete result.devDependencies["eslint-plugin-prettier"];
+        delete result.devDependencies["eslint-plugin-react"];
+        fs.unlinkSync(`./${obj.name}/.eslintrc.json`, (err) => {
+          if (err) {
+            console.log(symbol.error, chalk.red(err));
+          }
+        });
+      }
+      if (!obj.prettier) {
+        delete result.scripts["format"];
+        delete result.devDependencies["prettier"];
+        fs.unlinkSync(`./${obj.name}/.prettierrc.json`, (err) => {
+          if (err) {
+            console.log(symbol.error, chalk.red(err));
+          }
+        });
+      }
       fs.writeFileSync(fileName, result, "utf-8");
       resolve();
     }
-  });
-};
-
-//安装eslint,prettier工具
-let installCode = (ProjectName, data) => {
-  return new Promise(async (resolve) => {
-    if (data.eslint) {
-      await loadCmd(
-        `yarn add --dev --exact eslint && npx eslint --init`,
-        "ESlint",
-        ProjectName
-      );
-    }
-    if (data.prettier) {
-      await loadCmd(
-        `yarn add --dev --exact prettier && npx prettier --init`,
-        "Prettier",
-        ProjectName
-      );
-    }
-
-    // npx eslint --init
-    // await exec(`cd ${ProjectName}`, (error, stdout, stderr) => {
-    console.log(ProjectName, "data", data);
-    // });
-    resolve();
-  });
-};
-
-let loadCmd = async (cmd, text, ProjectName) => {
-  let loading = ora(`正在安装${text}中...`);
-  loading.start(`正在安装${text}中...`);
-  exec(cmd, { cwd: ProjectName }, function (error, stdout, stderr) {
-    if (error) {
-      loading.fail(`${text}安装完成`);
-      console.log(symbol.error, chalk.red(`${text}安装失败`));
-      return;
-    }
-    loading.succeed(`${text}安装完成`);
-    console.log(symbol.success, chalk.green(`${text}安装成功`));
   });
 };
 
@@ -133,5 +109,4 @@ module.exports = {
   notExistFold,
   prompt,
   updateJsonFile,
-  installCode,
 };

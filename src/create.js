@@ -5,7 +5,7 @@ import downloadGit from "download-git-repo";
 const util = require("util");
 const exec = util.promisify(require("child_process").exec);
 
-import { notExistFold, prompt, updateJsonFile, installCode } from "./util";
+import { notExistFold, prompt, updateJsonFile } from "./util";
 
 let create = async (ProjectName) => {
   //检测脚手架最新版本
@@ -61,16 +61,21 @@ let create = async (ProjectName) => {
             const fileName = `${ProjectName}/package.json`;
             answer.name = ProjectName;
             updateJsonFile(fileName, answer).then(() => {
-              console.log(symbol.success, chalk.green("配置文件更新完成"));
-            });
-            // 安装代码检测，代码格式化工具
-            installCode(ProjectName, answer).then(async () => {
+              answer.eslint &&
+                console.log(symbol.success, chalk.green(`ESlint配置成功`));
+              answer.prettier &&
+                console.log(symbol.success, chalk.green(`Prettier配置成功`));
+
+              console.log(
+                symbol.success,
+                chalk.green("package.json文件配置更新完成")
+              );
+
               console.log(
                 chalk.yellow(`
               🚀项目创建完毕，请使用以下命令进入项目：
               💻进入项目目录：${chalk.green(`cd ${ProjectName}`)}
               😎启动项目：${chalk.green("yarn dev")}
-              😎更新项目：${chalk.green("wsc update")}
               🚀安装依赖：${chalk.green("yarn install")}
               🔨打包构建：${chalk.green("yarn build")}
               `)
