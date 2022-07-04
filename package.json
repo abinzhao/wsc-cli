@@ -1,6 +1,6 @@
 {
   "name": "works-space-cli",
-  "version": "0.0.9",
+  "version": "1.0.0",
   "description": "前端脚手架CLI工具",
   "main": "./dist/main.js",
   "scripts": {

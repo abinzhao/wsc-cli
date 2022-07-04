@@ -44,18 +44,6 @@ let promptList = [
     name: "author",
     message: "请输入作者姓名：",
   },
-  {
-    type: "confirm",
-    name: "eslint",
-    message: "是否使用ESLint代码检测",
-    default: true,
-  },
-  {
-    type: "confirm",
-    name: "prettier",
-    message: "是否使用Prettier代码格式化",
-    default: true,
-  },
 ];
 
 let prompt = () => {
@@ -76,30 +64,8 @@ let updateJsonFile = (fileName, obj) => {
       result.description = obj.description;
       result.author = obj.author;
       result.version = obj.version;
-      if (!obj.eslint) {
-        delete result.scripts["eslint"];
-        delete result.devDependencies["@typescript-eslint/eslint-plugin"];
-        delete result.devDependencies["@typescript-eslint/parser"];
-        delete result.devDependencies["eslint"];
-        delete result.devDependencies["eslint-config-prettier"];
-        delete result.devDependencies["eslint-plugin-prettier"];
-        delete result.devDependencies["eslint-plugin-react"];
-        fs.unlinkSync(`./${obj.name}/.eslintrc.json`, (err) => {
-          if (err) {
-            console.log(symbol.error, chalk.red(err));
-          }
-        });
-      }
-      if (!obj.prettier) {
-        delete result.scripts["format"];
-        delete result.devDependencies["prettier"];
-        fs.unlinkSync(`./${obj.name}/.prettierrc.json`, (err) => {
-          if (err) {
-            console.log(symbol.error, chalk.red(err));
-          }
-        });
-      }
-      fs.writeFileSync(fileName, result, "utf-8");
+
+      fs.writeFileSync(fileName, JSON.stringify(result), "utf-8");
       resolve();
     }
   });
